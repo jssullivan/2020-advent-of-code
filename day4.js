@@ -1089,7 +1089,6 @@ validChecks = [
 
 function isPassportValid(passport) {
     //Some returns if one member matches the predicate, so negate the valid checks then negate the some (since its checking if its invalid)
-    //but also 
     return !validChecks.some(validator => 
         !validator(passport)
     )
@@ -1107,17 +1106,12 @@ function passportValidator(isPart1) {
         }
         const neededKeys = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
         const missingKey = neededKeys.some((key) => !passportObj[key]);
-        if (missingKey) {
-            continue;
-        } else if (isPart1) {
+        if (!missingKey && (isPart1 || isPassportValid(passportObj))) {
             totalValid++;
-        } else if (isPassportValid(passportObj)) {
-            totalValid++
-            console.log(passportObj)
         }
 
     }
-    console.log(totalValid)
+    return totalValid
 }
 
 console.log(passportValidator())
